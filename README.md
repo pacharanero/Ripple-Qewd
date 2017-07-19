@@ -1,19 +1,41 @@
-# qewd-ripple
+# qewd-ripple Vagrant build
 
-[![Build Status](https://travis-ci.org/RippleOSI/Ripple-Qewd.svg?branch=master)](https://travis-ci.org/RippleOSI/Ripple-Qewd)
+This repo includes a Vagrantfile which simplifies the process of setting up a local demo of the Ripple Stack. It should work on Windows, MacOSX, and any Linux, but so far it's only been tested on Linux Mint. If you encounter problems running it on any platform, please [raise an issue](https://github.com/pacharanero/Ripple-Qewd/issues)
 
+It instantiates an Ubuntu 16.04 virtual machine, sets up necessary port forwarding and file sharing, and then runs the `install_ripple_redis.sh` setup script as described further on in this README
+
+### Prerequisites:
+* You need to have installed for your platform:
+ * [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
+ * [Vagrant](https://www.vagrantup.com/downloads.html)
+
+## Usage
+
+* `git clone` this repository
+* `cd Ripple-Qewd`
+* `vagrant up` and wait for machine build and provisioning to complete
+The final message when the provisioning script is complete looks like:
+
+> ripple-demo and ripple-secure have been started in PM2 for you                  
+> ----------------------------------------------------------------------------------
+
+Ripple-Qewd on Redis should now be accessible from the browser on your host machine at http://localhost:3000
+
+* if you want to SSH into the virtual machine you can type `vagrant ssh`. Type `exit` to leave that SSH session.
+
+### Stopping the virtual machine
+* type `vagrant halt` in the terminal
+
+------
 
 Email: <code.custodian@ripple.foundation>
-
-2016 Ripple Foundation Community Interest Company 
-
+2016 Ripple Foundation Community Interest Company
 [http://ripple.foundation](http://ripple.foundation)
-
 Author: Rob Tweed, M/Gateway Developments Ltd (@rtweed)
 
 ## Introduction
 
-*qewd-ripple* is a Node.js-based Middle Tier , built as a key element of the open platform showcase stack supported by the Ripple Foundation, based on the [QEWDjs framework](https://github.com/robtweed/qewd). 
+*qewd-ripple* is a Node.js-based Middle Tier , built as a key element of the open platform showcase stack supported by the Ripple Foundation, based on the [QEWDjs framework](https://github.com/robtweed/qewd).
 
 Qewd-Ripple can be explained as; QewdJS related library for Ripple/Ripple is leveraging QewdJS .. so the terms Ripple-Qewd and Qewd-Ripple are used interchangeably here.
 
@@ -60,7 +82,7 @@ To give the user (*ripple* in this example) sudo privileges:
      usermod -aG sudo ripple
 
 
-3) **Use One Installer Script from this repo to create the QEWD/Node.js-based Ripple 
+3) **Use One Installer Script from this repo to create the QEWD/Node.js-based Ripple
  Middle Tier and UI**.  
 
 *We suggest you either install *qewd-ripple* with Redis as its database*:
@@ -69,7 +91,7 @@ To give the user (*ripple* in this example) sudo privileges:
       wget https://raw.githubusercontent.com/RippleOSI/Qewd-Ripple/master/installer/install_ripple_redis.sh
       source install_ripple_redis.sh
 
-(NB: during the installation, you'll be asked for the settings it should use for Redis & IPTables setup. 
+(NB: during the installation, you'll be asked for the settings it should use for Redis & IPTables setup.
 Just accept all the default values by pressing the *{Enter}* key when asked.)
 
 
@@ -110,7 +132,7 @@ to all the simulated patient data.
 
 ### Secure Mode
 
-If you want proper user authentication, use the secure mode startup file.  This expects to use Auth0 as an OAuth2 
+If you want proper user authentication, use the secure mode startup file.  This expects to use Auth0 as an OAuth2
 identity management provider.
 
 
@@ -138,8 +160,8 @@ Once you've edited the *ripple-secure.js* file, you should now be able to start 
 
 The startup file (~/qewd/ripple-secure.js) is set up to listen in the clear via port 8081.  The nginx configuration
 file (/etc/nginx/sites-available/default) is set up to provide the SSL service for your system and proxies the
-ripple-secure QEWD system.  The qewd-ripple installer includes a self-signed certificate (installed in the 
-~/qewd/ssl directory).  Switch these out for a proper SSL certificate and adjust the nginx SSL configuration in the 
+ripple-secure QEWD system.  The qewd-ripple installer includes a self-signed certificate (installed in the
+~/qewd/ssl directory).  Switch these out for a proper SSL certificate and adjust the nginx SSL configuration in the
 *sites-available/default* file.
 
 
@@ -148,13 +170,13 @@ ripple-secure QEWD system.  The qewd-ripple installer includes a self-signed cer
       http://123.221.100.21
 
 **Note**: as a last step, the installer attempts to add an *iptables* rule to map port 3000 to port 80.
-On some systems it has been noticed that this step fails.  If this is the case, then the above 
+On some systems it has been noticed that this step fails.  If this is the case, then the above
 URL will not work.  However, if you specify port 3000, it should burst into life, eg:
 
       http://123.221.100.21:3000
 
 
-If you're running in secure mode, the first time you connect you'll be redirected to Auth0's Lock screen, 
+If you're running in secure mode, the first time you connect you'll be redirected to Auth0's Lock screen,
 through which you can log in.  
 
 The Ripple Showcase Stack User Interface known as [PulseTile](http://ripple.foundation/pulsetile/) should then appear.
@@ -195,7 +217,7 @@ For more information about PM2, see:
 
 7) Monitoring what's going on in the QEWD layer
 
-The *qewd-ripple* installer also installs the *qewd-monitor* application which is a useful tool for 
+The *qewd-ripple* installer also installs the *qewd-monitor* application which is a useful tool for
 checking the health of your Ripple system, controlling its processes and viewing the Document Store and
 QEWD Session data (in which OpenEHR data is cached for each user).
 
@@ -207,11 +229,11 @@ To run the *qewd-monitor* application, point your browser at:
 
 The default management password is *keepThisSecret!*
 
-You can change this by editing the qewd-ripple startup file (~/qewd/ripple-demo.js or ~/qewd/ripple-secure.js). 
+You can change this by editing the qewd-ripple startup file (~/qewd/ripple-demo.js or ~/qewd/ripple-secure.js).
 Add the property *managementPassword* to the *config* object, eg:
 
        var ewdRipple = require('qewd-ripple/lib/startup');
-       
+
        var config = {
          managementPassword: 'myNewPassword',
          port: 3000,
@@ -220,7 +242,7 @@ Add the property *managementPassword* to the *config* object, eg:
            mode: 'demo'
          }
        };
-       
+
        ewdRipple.start(config);
 
 
@@ -243,20 +265,20 @@ Run this by simply typing:
 
 Believe it or not, it's also possible to install and run a fully-working Ripple showcase stack system on a Raspberry Pi!
 
-If you want to give it a try, you should use a newly-installed version of Raspbian, ideally with 
+If you want to give it a try, you should use a newly-installed version of Raspbian, ideally with
 no other software installed.  Then follow these steps:
 
       cd ~
       wget https://raw.githubusercontent.com/RippleOSI/Qewd-Ripple/master/installer/install_ripple_rpi.sh
       source install_ripple_rpi.sh
 
-Be patient - it takes time to build Redis and the MySQL database server in particular, but once it 
+Be patient - it takes time to build Redis and the MySQL database server in particular, but once it
 completes, you'll have a fully-working QEWD and Ripple system.
 
 Note: during the installation, you'll be asked for the settings it should use for Redis.  Just accept
 all the default values by pressing the *Enter* key when asked.
 
-PM2 and nginx (which acts as a proxy) are installed and configured for you, and the QEWD Ripple system is 
+PM2 and nginx (which acts as a proxy) are installed and configured for you, and the QEWD Ripple system is
 automatically started and managed for you as a service by PM2.
 
 So, on completion of the installer, all you need to do is point a browser at the IP address of
@@ -273,12 +295,12 @@ To run the qewd-monitor application:
 
 The default management password is: *keepThisSecret!*
 
-You can change this by editing the *qewd-ripple* startup file (*~/qewd/ripple-rpi.js*). 
+You can change this by editing the *qewd-ripple* startup file (*~/qewd/ripple-rpi.js*).
 Add the property *managementPassword* to the *config* object, eg:
 
 
        var ewdRipple = require('qewd-ripple/lib/startup');
-       
+
        var config = {
          managementPassword: 'myNewPassword',
          port: 3000,
@@ -290,7 +312,7 @@ Add the property *managementPassword* to the *config* object, eg:
            type: 'redis'
          }
        };
-       
+
        ewdRipple.start(config);
 
 
