@@ -14,10 +14,10 @@ It instantiates an Ubuntu 16.04 virtual machine, sets up necessary port forwardi
 * `git clone` this repository
 * `cd Ripple-Qewd`
 * `vagrant up` and wait for machine build and provisioning to complete
-The final message when the provisioning script is complete looks like:
+The final message when the provisioning script is complete should look something like this:
 
-> ripple-demo and ripple-secure have been started in PM2 for you                  
-> ----------------------------------------------------------------------------------
+`ripple-demo and ripple-secure have been started in PM2 for you`<br/>
+`----------------------------------------------------------------------------------`
 
 Ripple-Qewd on Redis should now be accessible from the browser on your host machine at http://localhost:3000
 
